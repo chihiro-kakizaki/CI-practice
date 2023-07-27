@@ -29,7 +29,7 @@ jobs:
         run: |
           docker build  --platform linux/amd64 . --tag ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
           docker push ${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}
-          echo "::set-output name=image-nginx::${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}"
+          echo "::set-output name=image-nginx::${{ env.REGISTRY }}/${{ env.REPOSITORY }}:${{ env.IMAGE_TAG }}"
 
       - name: Fill in the new nginx image ID in the Amazon ECS task definition
         id: task-def
@@ -38,7 +38,6 @@ jobs:
           CONTAINER_NAME_NGINX: ci-practice-container
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
-          # envで設定したパスのtask-definition
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME_NGINX }}
           image: ${{ steps.build-image-nginx.outputs.image-nginx }}
@@ -49,7 +48,6 @@ jobs:
           ECS_CLUSTER: ci-practice-cluster 
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
-          # task-def-nextで作成したtask-definition
           task-definition: ${{ steps.task-def.outputs.task-definition }}
           service: ${{ env.ECS_SERVICE }}
           cluster: ${{ env.ECS_CLUSTER }}
