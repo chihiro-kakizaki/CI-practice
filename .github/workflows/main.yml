@@ -21,6 +21,7 @@ jobs:
         id: login-ecr 
 
       - name: build and push docker image to ecr
+        id: build-image-nginx
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           REPOSITORY: ci-practice
