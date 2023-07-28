@@ -44,8 +44,8 @@ jobs:
 
       - name: Deploy Amazon ECS task definition
         env:
-          ECS_SERVICE: ci-practice-service                
-          ECS_CLUSTER: ci-practice-cluster 
+          ECS_SERVICE: ci-practice-service2              
+          ECS_CLUSTER: ci-practice-cluster2
         uses: aws-actions/amazon-ecs-deploy-task-definition@v1
         with:
           task-definition: ${{ steps.task-def.outputs.task-definition }}
